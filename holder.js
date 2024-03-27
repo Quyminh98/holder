@@ -4,7 +4,7 @@ const { AccountLayout } = require('@solana/spl-token');
 const fs = require("fs")
 const filePath = './holder.json';
 
-const url = "https://billowing-burned-darkness.solana-mainnet.quiknode.pro/d209116502969b71adffbb9bb36f5f1e6e407d79/";
+const url = "https://hardworking-nameless-gas.solana-mainnet.quiknode.pro/b85af68496e0bdc5365ebfca1d0b0dad19035f48/";
 const connection = new web3.Connection(url);
 
 const getListHolder = async (tokenMint, amount, decimals) => {
@@ -51,16 +51,16 @@ const getListHolder = async (tokenMint, amount, decimals) => {
             });
         }
     })
-    // console.log(result.slice(0, 5));
-    console.log(result.length);
 
+    console.log(result.length);
     return result;
 };
 
-// getListHolder("DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", 250000, 5); // BONK 160,949
-// getListHolder("EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", 5, 6); // WIF 53,718
-// getListHolder("HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4", 30, 9); // MYRO 31,398
-// getListHolder("WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk", 45000, 5); // WEN 144,816 ---> 390,881
+
+// getListHolder("DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", 250000, 5); // BONK 174,377
+// getListHolder("EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", 5, 6); // WIF 68,582
+// getListHolder("HhJpBhRRn4g56VsyLuT8DL5Bv31HkXqsrahTTUCZeZg4", 30, 9); // MYRO 34600
+// getListHolder("WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk", 45000, 5); // WEN 136351
 
 const filterBalance = async () => {
     fs.readFile(filePath, async (err, data) => {
@@ -69,15 +69,20 @@ const filterBalance = async () => {
             throw err
         } else {
             // console.log(data);
-            const currentData = JSON.parse(data)
+            const currentData = JSON.parse(data).slice(325000, 350000)
+            // console.log(currentData);
             for (let i = 0; i < currentData.length; i++) {
+                console.log(i);
+                console.log(currentData[i]);
                 let balance = await connection.getBalance(new web3.PublicKey(currentData[i]));
                 if (balance > 0.05) {
                     result.push(currentData[i])
+                    console.log("Added");
                 }
+
             }
 
-            fs.writeFile(filePath, JSON.stringify(result, null, 2), (err) => {
+            fs.writeFile("./holder325k-350k.json", JSON.stringify(result, null, 2), (err) => {
                 if (err) throw err;
                 console.log('Data updated!');
             });
